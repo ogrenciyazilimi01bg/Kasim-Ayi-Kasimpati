@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kasım Ayının Kasımpatısı</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #ffe9ff 0%, #1b1030 55%, #06030e 100%);
+      font-family: system-ui, sans-serif;
+      overflow: hidden;
+    }
+
+    .scene {
+      position: relative;
+      width: 540px;
+      height: 540px;
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.22), transparent 60%),
+        radial-gradient(circle at 80% 10%, rgba(255,255,255,0.15), transparent 65%),
+        radial-gradient(circle at 10% 80%, rgba(255,196,255,0.18), transparent 60%),
+        radial-gradient(circle at 90% 85%, rgba(170,215,255,0.15), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), transparent 40%),
+        linear-gradient(180deg, #12091e 40%, #1b1015 60%, #261819 100%);
+      box-shadow:
+        0 25px 60px rgba(0,0,0,0.6),
+        inset 0 0 40px rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .title {
+      text-align: left;
+      font-size: 30px;
+      font-weight: 600;
+      color: #ffd8ff;
+      margin: 20px;
+      text-shadow: 0 0 14px #ff66ff;
+    }
+
+    /* Sparkles */
+    .sparkles { position: absolute; inset: 0; pointer-events: none; }
+    .sparkle {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff8d7 0%, #ffe98c 40%, transparent 70%);
+      box-shadow: 0 0 10px rgba(255,241,184,0.9);
+      opacity: 0.35;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%,100% { opacity: 0.15; transform: scale(0.8); }
+      50% { opacity: 0.9; transform: scale(1.6); }
+    }
+
+    /* Ground */
+    .ground {
+      position: absolute;
+      bottom: 0;
+      left: 0; right: 0;
+      height: 120px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.15), transparent 60%),
+        linear-gradient(180deg, #c35722 0%, #d75315 40%, #e43909 100%);
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.7);
+    }
+
+    /* Bouquet Container */
+    .bouquet {
+      position: absolute;
+      bottom: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 330px;
+      pointer-events: none;
+    }
+
+    /* Flower Bases */
+    .flower {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      transform-origin: bottom center;
+    }
+
+    .stem {
+      position: absolute;
+      width: 6px;
+      height: 140px;
+      background: linear-gradient(180deg, #6ebc5e 0%, #366a35 100%);
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.35);
+    }
+
+    .head {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 130px;
+    }
+
+    .outer .petal,
+    .inner .petal {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform-origin: 50% 80%;
+      border-radius: 999px;
+      box-shadow: 0 0 12px rgba(248,153,210,0.7), 0 4px 8px rgba(0,0,0,0.35);
+    }
+
+    /* Outer ring */
+    .outer .petal {
+      width: 28px; height: 70px;
+      background:
+        radial-gradient(circle at 20% 10%, #ffeaf8 0%, transparent 45%),
+        linear-gradient(180deg, #ffd7f8 0%, #f47ac6 40%, #d62385 100%);
+    }
+
+    /* Inner ring */
+    .inner .petal {
+      width: 20px; height: 54px;
+      background:
+        radial-gradient(circle at 10% 0%, #fff5ff 0%, transparent 35%),
+        linear-gradient(180deg, #ffe5ff 0%, #f89fe0 45%, #d03b94 100%);
+    }
+
+    /* 12 petals arranged circular */
+    .outer .petal:nth-child(n) { transform: translate(-50%, -50%) rotate(calc((var(--i) * 30deg))); }
+    .inner .petal:nth-child(n) { transform: translate(-50%, -50%) rotate(calc((var(--i) * 30deg))); }
+
+    /* Flower Center */
+    .center {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 42px; height: 42px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, #fff3a8 0%, #ffd64a 40%, #f6b300 75%, #a56700 100%);
+      box-shadow: 0 0 20px rgba(255,223,120,0.9);
+    }
+
+    /* Flower Positions (6 pieces) */
+    .f1 { left: 50%; transform: translateX(-50%); }
+    .f2 { left: 20%; transform: translateX(-20%) rotate(-6deg); }
+    .f3 { left: 80%; transform: translateX(-80%) rotate(6deg); }
+    .f4 { left: 35%; bottom: 20px; transform: translateX(-35%); }
+    .f5 { left: 65%; bottom: 20px; transform: translateX(-65%); }
+    .f6 { left: 50%; bottom: -10px; transform: translateX(-50%) scale(0.85); }
+
+    /* Ribbon Pot */
+    .pot {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 150px;
+      border-radius: 0 0 26px 26px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.18), transparent 40%),
+        linear-gradient(135deg, #5e3223 0%, #3b1b10 40%, #2b120a 100%);
+      box-shadow:
+        0 18px 35px rgba(0,0,0,0.7),
+        inset 0 0 16px rgba(0,0,0,0.6);
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 40px; left: 50%;
+      transform: translateX(-50%);
+      width: 240px; height: 36px;
+      border-radius: 18px;
+      background:
+        linear-gradient(90deg, #ff8dbf 0%, #ff4e8d 40%, #e0215c 100%);
+    }
+
+    .ribbon-knot {
+      position: absolute;
+      top: 36px; left: 50%;
+      transform: translateX(-50%);
+      width: 50px; height: 42px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #ff88b4 0%, #ff3c7d 100%);
+      box-shadow: 0 0 12px rgba(255,120,170,0.7);
+    }
+
+  </style>
+</head>
+
+<body>
+    <div class="title">
+      Bu kasımpatı, kasımda çiçek alamayan<br> herkes için kodlandı. 💛
+    </div>
+  <div class="scene">
+
+    
+
+    <div class="sparkles">
+      <div class="sparkle" style="top:12%; left:20%;"></div>
+      <div class="sparkle" style="top:35%; left:70%;"></div>
+      <div class="sparkle" style="top:60%; left:10%;"></div>
+      <div class="sparkle" style="top:55%; left:85%;"></div>
+      <div class="sparkle" style="top:18%; left:50%;"></div>
+      <div class="sparkle" style="top:80%; left:25%;"></div>
+      <div class="sparkle" style="top:8%; left:85%;"></div>
+    </div>
+
+    <div class="ground"></div>
+
+    <div class="bouquet">
+
+      <!-- 6 ÇİÇEK -->
+      <!-- Her petal için --i indexi -->
+      <!-- Flower 1 -->
+      <div class="flower f1">
+        <div class="stem"></div>
+        <div class="head">
+          <div class="outer">
+            <!-- 12 petal -->
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="inner">
+            <!-- 12 petal -->
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="center"></div>
+        </div>
+      </div>
+
+      <!-- Flower 2 -->
+      <div class="flower f2">
+        <div class="stem"></div>
+        <div class="head">
+          <div class="outer">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="inner">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="center"></div>
+        </div>
+      </div>
+
+      <!-- Flower 3 -->
+      <div class="flower f3">
+        <div class="stem"></div>
+        <div class="head">
+          <div class="outer">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="inner">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="center"></div>
+        </div>
+      </div>
+
+      <!-- Flower 4 -->
+      <div class="flower f4">
+        <div class="stem"></div>
+        <div class="head">
+          <div class="outer">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="inner">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="center"></div>
+        </div>
+      </div>
+
+      <!-- Flower 5 -->
+      <div class="flower f5">
+        <div class="stem"></div>
+        <div class="head">
+          <div class="outer">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="inner">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="center"></div>
+        </div>
+      </div>
+
+      <!-- Flower 6 -->
+      <div class="flower f6">
+        <div class="stem"></div>
+        <div class="head">
+          <div class="outer">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="inner">
+            <div class="petal" style="--i:0"></div><div class="petal" style="--i:1"></div>
+            <div class="petal" style="--i:2"></div><div class="petal" style="--i:3"></div>
+            <div class="petal" style="--i:4"></div><div class="petal" style="--i:5"></div>
+            <div class="petal" style="--i:6"></div><div class="petal" style="--i:7"></div>
+            <div class="petal" style="--i:8"></div><div class="petal" style="--i:9"></div>
+            <div class="petal" style="--i:10"></div><div class="petal" style="--i:11"></div>
+          </div>
+
+          <div class="center"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pot">
+      <div class="ribbon"></div>
+      <div class="ribbon-knot"></div>
+    </div>
+
+  </div>
+</body>
+</html>
